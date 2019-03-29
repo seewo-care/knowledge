@@ -1,4 +1,4 @@
-# hooks介绍
+# React Hooks 
 
 ## hooks诞生的原因
 
@@ -50,7 +50,7 @@ hooks有下列API。所有的示例demo都在这里。https://codesandbox.io/s/o
 
 接下来会解释这些API并附有详细的demo。
 
-1.useState
+#### 1.useState
 
 useState是hooks中最基础的一个API。其使用方式类似于class中的this.setState，不过又有所不同。下面是demo中的示例。
 
@@ -81,7 +81,7 @@ function Counter() {
 
 另外，如果useState的参数值需要复杂的计算才能得到，那么可以传入给useState一个函数，它仅在首次渲染时执行该复杂的计算函数。`useState(() => expensiveCalc())`。
 
-2.useEffect/useLayoutEffect
+#### 2.useEffect/useLayoutEffect
 
 由于useEffect和useLayoutEffect具有相同的使用方式，就放到一起来介绍。
 正如其名，useEffect用来处理副作用。副作用包括DOM的改变、订阅、定时器、日志等。副作用不允许放到函数体中。
@@ -129,7 +129,7 @@ useLayoutEffect的语法和useEffect一样。不同点在于：
 
 在useLayoutEffect的demo中，尝试将useEffect改变成useLayoutEffect，然后在输入框输入第十一个字符，可以看到明显差别。在大多数情况下你应该使用useEffect。因为useEffect是异步的，不会堵塞主线程渲染。
 
-3.useRef
+#### 3.useRef
 
 在16.3版本中，引入React.createRef，来代替字符串ref。同样，在hooks中，useRef也可以取代createRef。可以查看demo中的useRef。
 
@@ -164,7 +164,7 @@ useEffect(() => {
 
 这里的timerRef.current相当于class中的实例变量。
 
-4.useContext
+#### 4.useContext
 
 在React中，如果要将上层的属性传递到下层，一般来说需要一层一层的传递。比如A->B-C->D。Context是一种数据传递机制，用于跨层级传递数据。比如在D组件可以直接使用A组件的数据。可以查看demo中的useContext。
 
@@ -207,7 +207,7 @@ function Child() {
 
 另外，因为没有static的限制，同一个组件中可以使用多个useContext。也就是说，可以使用多个上层组件传递来的数据。
 
-5.useReducer
+#### 5.useReducer
 
 提到reducer，首先想到的应该是redux中的reducer。useReducer这个hook与redux中的reducer有所相似又有所不同。可以查看demo中的useReducer。
 
@@ -254,7 +254,7 @@ useReducer接受连个参数，一个是reducer，一个是initialState。返回
 
 还有一点必须需要提到的是，由于性能原因，react-redux没有推出官方的useRedux。 具体原因可以看这篇文章：https://juejin.im/post/5c7c8dece51d45607d5324cd 。在最近的[7.0的beta版本的发布说明](https://github.com/reduxjs/react-redux/releases)中，react-redux团队宣布将在7.x版本中推出useRedux API。
 
-6.useImperativeHandle
+#### 6.useImperativeHandle
 
 在class组件中，如果父组件需要改变子组件的状态，有两种方式。一种是就是通过改变父组件state，该state作为props传给子组件，从而改变子组件的状态。另一种就是通过操作子组件的ref了。传递ref的方式主要有两种，createRef和forwardRef，具体的就不再细说。useImperativeHandle这个hook就是ref的另一种写法。以前是在父组件中拿到子组件元素的ref，直接操作ref代表的元素节点，相当于是直接操作子元素的dom元素。现在通过这个hook可以在子组件中暴露一些API供父组件调用，而父组件是不能直接操作子组件的dom元素的。迪米特法则就是这样描述的：一个类对它所调用的类的细节知道的越少越好。具体代码可以查看demo中的useImperativeHandle。
 
@@ -279,7 +279,7 @@ function Child(props) {
 
 不过在实际开发中，你应该尽可能通过传递props来改变子组件，通过ref来改变子组件是一种不推荐的方案。
 
-7.useCallback
+#### 7.useCallback
 
 useCallback用来缓存一个函数。在函数式组件中可能有这样一种情况，父组件调用子组件，并将一个函数传递给子组件，假设子组件是使用了memo的（如果属性值没有变化，那么将不会重新渲染）。具体代码可以查看demo中的useCallback。
 
@@ -330,7 +330,7 @@ function Parent() {
 
 这里的handleChange函数是被缓存了的，除非count发生变化，它才会发生变化。通过demo打开控制台，发现随着count2的改变，子组件是不会重新渲染的。
 
-8.useMemo
+#### 8.useMemo
 
 useMemo用来缓存一个复杂的计算值。 useCallback(fn, deps) 等价于 useMemo(() => fn, deps)。如果通过一个输入得到一个值需要经过复杂的计算，那么下次同样的输入再进行一遍同样复杂的计算是没有必要的。这正是useMemo存在的意义。具体代码可以查看demo中的useMemo。
 
@@ -365,7 +365,7 @@ useMemo接受一个函数，该函数涉及到复杂的计算，并接受一系�
 
 需要注意的是，react文档中说明，useMemo只是作为一种暗示，当依赖值变化时，并不一定能保证每一次都不计算。
 
-9.useDebugValue
+#### 9.useDebugValue
 
 通常来说你不需要它。它只会存在于自定义的hooks中用来标志一个自定义的hooks。当在chrome中打开react扩展的时候，如果一个组件使用到了自定义的hooks，并且该hooks使用到了useDebugValue，那么该组件下方会显示useDebugValue传入的参数。
 
